@@ -1,4 +1,4 @@
-# OEV SEARCHER BOT
+# OEV PRICE AUCTION
 
 This repo takes you through setting up and executing a price feed searcher bot on the OEV Network allowing you to update a price feed on the ETH Sepolia test network. 
 

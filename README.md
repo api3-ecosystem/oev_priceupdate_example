@@ -9,6 +9,7 @@ Only a small amount of ETH is needed for bids and transactions costs on the OEV 
 You can request OEV Network ETH in the [API3 discord](https://discord.gg/api3dao) within the `ECOSYSTEM TALK =>  OEV Section` [API3 Discord](https://discord.gg/api3dao):
 
 To add the OEV Network to you metamask, please add the following network details:
+```
 - Network Name: OEV Sepolia Testnet
 
 - RPC URL: https://oev-network-sepolia-testnet-rpc.eu-north-2.gateway.fm
@@ -18,7 +19,7 @@ To add the OEV Network to you metamask, please add the following network details
 - Currency symbol: ETH
 
 - Block explorer URL: https://oev-network-sepolia-testnet-blockscout.eu-north-2.gateway.fm
-
+```
 
 Once the API3 has sent the OEV ETH, you can check your wallet to verify that you have some ETH on the OEV network.
 

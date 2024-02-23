@@ -27,16 +27,20 @@ Want the TLDR? Click [here](#tldr)
 
 ## Important information
 
-Lending Dapp to monitor:  https://api3-oev-playground.vercel.app/markets
+
+### Lending Dapp to monitor:  
+- https://api3-oev-playground.vercel.app/markets
 
 #### ETH Sepolia Network:
 ```
-- OEVT Proxy: 0xFc345f8D73cA316D8f05BD7E4B42Ddd1e28dDfEc (Price Oracle)
+- OEVT Proxy: 0xFc345f8D73cA316D8f05BD7E4B42Ddd1e28dDfEc (Price Oracle to update)
 - OEVT Token address: 0x5Df761cB11aEd75618a716e252789Cdc9280f5A6
-- USDC Token Address - 0x3D5ebDbF134eAf86373c24F77CAA290B7A578D7d
-- Lending Pool: 0xEeEed4f0cE2B9fe4597b6c99eD34D202b4C03052 (get userAccountData)
+- USDC Token Address - 0x3D5ebDbF134eAf86373c24F77CAA290B7A578D7d  *Faucet
+- Lending Pool: 0xEeEed4f0cE2B9fe4597b6c99eD34D202b4C03052 (read userAccountData)
 - AaveOracle: 0x97F4B0E84A589e0b4581d74734e3B2Cc7741D093 (check Oracle Price)
 ```
+
+* In order to pay back loans, you will need to pay in this USDC token.  This faucet requires 0.01 Sepolia ETH to claim 10,000 USDC [Tokens Faucet](https://sepolia.etherscan.io/address/0x3D5ebDbF134eAf86373c24F77CAA290B7A578D7d#writeContract)
 
 #### OEV network:
 ```

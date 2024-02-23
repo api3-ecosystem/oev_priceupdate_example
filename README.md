@@ -6,7 +6,7 @@ You will need ETH on both ETH Sepolia and the OEV Network for full functionality
 
 Only a small amount of ETH is needed for bids and transactions costs on the OEV Network. 
 
-You can request OEV Network ETH in the [API3 discord](https://discord.gg/api3dao) channel in the `ECOSYSTEM TALK =>  OEV Section` [API3 Discord](https://discord.gg/api3dao):
+You can request OEV Network ETH in the [API3 discord](https://discord.gg/api3dao) within the `ECOSYSTEM TALK =>  OEV Section` [API3 Discord](https://discord.gg/api3dao):
 
 To add the OEV Network to you metamask, please add the following network details:
 - Network Name: OEV Sepolia Testnet

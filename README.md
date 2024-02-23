@@ -6,15 +6,41 @@ You will need ETH on both ETH Sepolia and the OEV Network for full functionality
 
 Only a small amount of ETH is needed for bids and transactions costs on the OEV Network. 
 
-You can bridge from ETH Sepolia to the [OEV Network here](https://oev-network-sepolia-testnet-bridge.eu-north-2.gateway.fm/login):
+You can request OEV Network ETH in the [API3 discord](https://discord.gg/api3dao) channel in the `ECOSYSTEM TALK =>  OEV Section` [API3 Discord](https://discord.gg/api3dao):
 
-The bridge page also has an `Add to Metamask` option to easily add the chain to your wallet.
+To add the OEV Network to you metamask, please add the following network details:
+- Network Name: OEV Sepolia Testnet
 
-![Add to Metamask](images/settings.png "Settings")
+- RPC URL: https://oev-network-sepolia-testnet-rpc.eu-north-2.gateway.fm
 
-Once the bridging is complete, you can check your wallet to verify that you have some ETH on the OEV network.
+- Chain ID: 736160594
+
+- Currency symbol: ETH
+
+- Block explorer URL: https://oev-network-sepolia-testnet-blockscout.eu-north-2.gateway.fm
+
+
+Once the API3 has sent the OEV ETH, you can check your wallet to verify that you have some ETH on the OEV network.
 
 Want the TLDR? Click [here](#tldr)
+
+## Important information
+
+Lending Dapp to monitor:  https://api3-oev-playground.vercel.app/markets
+
+#### ETH Sepolia Network:
+```
+- OEVT Proxy: 0xFc345f8D73cA316D8f05BD7E4B42Ddd1e28dDfEc (Price Oracle)
+- OEVT Token address: 0x5Df761cB11aEd75618a716e252789Cdc9280f5A6
+- USDC Token Address - 0x3D5ebDbF134eAf86373c24F77CAA290B7A578D7d
+- Lending Pool: 0xEeEed4f0cE2B9fe4597b6c99eD34D202b4C03052 (get userAccountData)
+- AaveOracle: 0x97F4B0E84A589e0b4581d74734e3B2Cc7741D093 (check Oracle Price)
+```
+
+#### OEV network:
+```
+Auctioneer Address: 0x34f13A5C0AD750d212267bcBc230c87AEFD35CC5
+```
 
 ## Getting Started
 
@@ -243,7 +269,7 @@ npx hardhat run scripts/submit_bid_and_update.js
 ## Flow of the Auction Process
 
 ![OEV Flow](images/flow.png "OEV Flow")
-[Larger Image](https://i.imgur.com/In6QYUz.png)
+[Larger Image](https://i.imgur.com/AtHuJm8.png)
 
 
 # tldr

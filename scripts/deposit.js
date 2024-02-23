@@ -12,7 +12,7 @@ const privateKey = process.env.PRIVATE_KEY;
 const wallet = new Wallet(privateKey, provider);
 
 const auctionHouse = new Contract(
-  "0x7597985630674dA4D62Ae60ad4D10E40bb619B08", // OevAuctionHouse contract address
+  "0x34f13A5C0AD750d212267bcBc230c87AEFD35CC5", // OevAuctionHouse contract address
   OevAuctionHouseAbi,
   wallet
 );

@@ -16,17 +16,17 @@ const OevAuctionHouseAbi = require("./contractABIs/OevAuctionHouseABI.json");
 /**
  * Constants
  **/
-const OEV_AUCTION_HOUSE_CONTRACT_ADDRESS = "0x7597985630674dA4D62Ae60ad4D10E40bb619B08";  // On OEV testnet
+const OEV_AUCTION_HOUSE_CONTRACT_ADDRESS = "0x34f13A5C0AD750d212267bcBc230c87AEFD35CC5";  // On OEV testnet
 const CHAIN_ID = 11155111;                                                                // ETH Sepolia chain ID                    
-const WBTC_USD_PROXY_ADDRESS = "0xa8cea58ab9060600e94bb28b2c8510b73171b55c";              // ETH Sepolia WBTC/USD price feed
+const OEVT_USD_PROXY_ADDRESS = "0xFc345f8D73cA316D8f05BD7E4B42Ddd1e28dDfEc";              // ETH Sepolia OEVT/USD price feed
 const API3SERVER_V1_CONTRACT_ADDRESS = "0x709944a48cAf83535e43471680fDA4905FB3920a";      // API3Proxy server that will allow us to update the price feed
 
 // Your unique inputs
-const OUR_DEPLOYED_MULTICALL_CONTRACT_ADDRESS = "0xF6f7f3667Cf5A047Bd6aE7dE363642b71D188C37"; //Your smart contract deployed on ETH Sepolia network
+const OUR_DEPLOYED_MULTICALL_CONTRACT_ADDRESS = "Your deployed multiCall Contract";       //Your smart contract deployed on ETH Sepolia network
 const PRICE = parseEther("52605");                                                        // The price point you a bidding lower or higher than
 const GREATER_OR_LOWER = "LTE";                                                           // Setting if it will be "less than or equal to" (either "LTE" or "GTE")
 const BID_AMOUNT = parseEther("0.01");                                                    // The amount of ETH you are bidding to win this auction and perform the oracle update
-const PUBLIC_ADDRESS_OF_THE_BIDDER = "0xe2b8651bF50913057fF47FC4f02A8e12146083B8";        // The wallet address of the signer doing the bid
+const PUBLIC_ADDRESS_OF_THE_BIDDER = "Your public address";                               // The wallet address of the signer doing the bid
 
 // Setup our contract object for the auction house on OEV test network
 const provider = new JsonRpcProvider("https://oev-network-sepolia-testnet-rpc.eu-north-2.gateway.fm");
@@ -64,11 +64,11 @@ const getBidDetails = (proxyAddress, condition, conditionValue, updaterAddress) 
 const placeBidWithExpiration = async () => {
   const bidTopic = getBidTopic(
     CHAIN_ID,                                     // Chain ID that the price feed is on                           
-    WBTC_USD_PROXY_ADDRESS                        // The Price feed Proxy we want to update. Currently the only updatable price feed on OEV testnet
+    OEVT_USD_PROXY_ADDRESS                        // The Price feed Proxy we want to update. Currently the only updatable price feed on OEV testnet
   );
 
   const bidDetails = getBidDetails(
-    WBTC_USD_PROXY_ADDRESS,                       // Proxy address: Sepolia WBTC/USD price feed - the price feed we want to update
+    OEVT_USD_PROXY_ADDRESS,                       // Proxy address: Sepolia OEVT/USD price feed - the price feed we want to update
     GREATER_OR_LOWER,                             // The condition you want to update
     PRICE,                                        // The price you want to update
     OUR_DEPLOYED_MULTICALL_CONTRACT_ADDRESS,      // Your deployed MultiCall contract Address

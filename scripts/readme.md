@@ -7,21 +7,21 @@ In order to find opportunities in lending Dapps, we must gather information abou
 
 ## Step 1: Tracking Deposits
 
-We want to keep a local database of addresses that we can quickly access to constantly update and check health positions.  In many cases, an index subgraph can pull historic data that we can store locally.  In this case, we do not have that option and we must manually pull the data from the contract itself. 
+We want to keep a local database of addresses that we can quickly access to constantly update and check health positions.  In many cases an index subgraph can pull historic data that we can store locally.  In this case, we do not have that option and we must manually pull the the data from the contract itself. 
 
 ### Collecting Deposit Events
 
 1. **Listen for Deposit Events**: Use ethers.js to listen to or query past `Deposit` events emitted by the lending platform's smart contract. These events indicate that a wallet has deposited assets. In most cases, we want to keep track of the addresses AND the assets deposited.  In this hackathon example, we know that the only asset being provided is the [OEV Token](https://sepolia.etherscan.io/address/0x5Df761cB11aEd75618a716e252789Cdc9280f5A6) so we won't need to keep a database of the assets
 
-2. **Store Wallet Addresses**: For simplicity and rate limiting, we have provided the deposited addresses in a [separate json](wallets/wallets.json) file for your use if necessary.  Bonus points if you write a script to pull them in your own way from the lending contract 0xEeEed4f0cE2B9fe4597b6c99eD34D202b4C03052 
+2. **Store Wallet Addresses**: For simplicity and rate limiting, we have provided the deposited addresses in a [separate json](wallets/wallets.json) file for you use if necessary.  Bonus points if you write a script to pull them in your own way from the lending contract 0xEeEed4f0cE2B9fe4597b6c99eD34D202b4C03052 
 
 ## Step 2: Monitoring Health Factors
 
-Now that we have a list of wallets available to us, we want to check their health positions to identify upcoming opportunities are available to us.
+Now that we have a list of wallets available to us, we want to check their health positions to see what upcoming opportunities are available to us.
 
 ### Checking Wallet Health
 
-1. **The LendingPool contract `getUserAccountData` function**: We call the `getUserAccountData(address_user)` function for each collected address to fetch their account data, including the health factor. `Contract Address On Sepolia: 0xEeEed4f0cE2B9fe4597b6c99eD34D202b4C03052`
+1. **The LendingPool contract `getUserAccountData` function**: We call the `getUserAccountData(address_user)` function for each collected address to fetch their account data, including the health factor. Contract Address: 0xEeEed4f0cE2B9fe4597b6c99eD34D202b4C03052
 
 ```
 const provider = new ethers.JsonRpcProvider("your RPC");
@@ -49,7 +49,7 @@ Data example:
 
 3. **Filter by Health Factor**: Focus on wallets with health factors close to 1 (considering the 18 decimal places for wei).
 
-4. **Important Factor**: In real use cases, when creating this list of opportunities we must consider the Deposited and Borrowed Positions.  We need to know what asset to payback and what asset will get rewarded with.  In this hackathon example, we know the the OEV token is the supplied asset, and USDC is the borrow asset we must pay back.
+4. **Important Factor**: In real use cases, when creating this list of opportunities we must consider the Deposited and Borrowed Positions.  We need to know what asset to payback and what asset will will get rewarded with.  In this hackathon example, we know the the OEV token is the supplied asset, and USDC is the borrow asset we must pay back.
 
 ## Step 3: Calculating Liquidation Prices
 
@@ -63,7 +63,7 @@ Data example:
 
 1. **Deposit OEV Network ETH to Auction Contract**: Make sure to deposit ETH to the auction contract as this will allow you to place bids on the auction contract based on the amount that you have deposited.
 
-2. **Make the Bid**: Put in all the details about our bid here:
+2. **Make the Bid**: Put in all the details about our bid here
  - What chain we are bidding for (For this hackathon Sepolia ONLY)
  - What Proxy address we want to update (For this hackathon OEV Proxy)
  - What is the condition (Greater or Lower than the proposed price)
@@ -73,7 +73,7 @@ Data example:
     For in depth details about this process, please refer to this [example](https://github.com/api3-ecosystem/oev_priceupdate_example)
 
 
-3. **Listen for Winning Bids**: We can listen for the event of `AwardedBid` on the OEV auctionHouse contract (`0x34f13A5C0AD750d212267bcBc230c87AEFD35CC5` on the OEV Network) to see if our bid has been awarded.
+3. **Listen for Winning Bids**: We can listen for the event of `AwardedBid` on the OEV auctionHouse contract (0x34f13A5C0AD750d212267bcBc230c87AEFD35CC5) to see if our bid has been awarded.
 
 Alternately, we can check on bidId statuses by check on the auctionHouse contract by calling `bids` and passing our encoded bidId details.
 
@@ -82,14 +82,14 @@ Alternately, we can check on bidId statuses by check on the auctionHouse contrac
 
 ## Step 4: Preparing for Liquidation
 
-1. **Preping our Transaction**: Now that we have the signature to update the price, we want to prepare our liquidation mechanism.  
+1. **Preping our Transaction**: Now that we have have the signature to update the price, we want to prepare our liquidation mechanism.  
 - We will update the OEV Token proxy price feed
 - Pay the bidding fee to the Dapp (via a Value pass)
 - In the same transaction, repay the debt the maximum amount making sure our wallet has enough to pay back the loan  (in this hackathon it is purely USDC)
     - The use of flash loans is a common practice to repay debt.  We will not be covering this here as you can just use the [USDC Faucet](https://sepolia.etherscan.io/address/0x3D5ebDbF134eAf86373c24F77CAA290B7A578D7d#writeContract) to mint out the tokens required to pay back.
-    - If you would like, you can make use of flashloans to pay off the debt
+    - If you would like, you can make sure of flashloans to pay of the debt
 
-2. **Bulking the Transactions**: If we were to update the price and then try to liquidate the position in two separate transactions, we would lose our opportunity to MEV.  Instead we utilize our deployed `multiCal contract`, from this [example](https://github.com/api3-ecosystem/oev_priceupdate_example), by combining our transactions into a single call to optimize the process. 
+2. **Bulking the Transactions**: If we were to update the price and then try to liquidate the position in two separate transactions, we would lose our opportunity to MEV.  Instead we utilize our deployed `multiCal contract`, from this [example](https://github.com/api3-ecosystem/oev_priceupdate_example), by bulking our transactions into a single call. 
 
 3. **Risk Management**: Always consider the risks involved in liquidation, including potential price slippage and gas costs.
 

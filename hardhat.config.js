@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("hardhat-deploy");
 require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
@@ -27,8 +28,8 @@ module.exports = {
   },
   networks: {
     hardhat: {
-    chainId: 1337
-  },
+      chainId: 1337,
+    },
     sepolia: {
       url: `${process.env.SEPOLIA_RPC_URL}`,
       accounts: [`${process.env.PRIVATE_KEY}`],
@@ -38,7 +39,6 @@ module.exports = {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
   sourcify: {
-    enabled: false
+    enabled: false,
   },
-
 };

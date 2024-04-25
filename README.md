@@ -6,7 +6,7 @@ You will need ETH on both ETH Sepolia and the OEV Network for full functionality
 
 Only a small amount of ETH is needed for bids and transactions costs on the OEV Network.
 
-You can bridge from ETH Sepolia to the [OEV Network here](https://oev-network-sepolia-testnet-bridge.eu-north-2.gateway.fm/login):
+You can bridge from ETH Sepolia to the [OEV Network here](https://oev-network-sepolia-testnet-agg-bridge.eu-north-2.gateway.fm/login):
 
 The bridge page also has an `Add to Metamask` option to easily add the chain to your wallet.
 

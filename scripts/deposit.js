@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const provider = new JsonRpcProvider(
-  "https://oev-network-sepolia-testnet-rpc.eu-north-2.gateway.fm"
+  "https://sepolia-rollup.arbitrum.io/rpc"
 );
 
 //Bring in Private Key from .env

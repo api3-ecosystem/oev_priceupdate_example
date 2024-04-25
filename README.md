@@ -1,20 +1,12 @@
 # OEV SEARCHER BOT
 
-This repo takes you through setting up and executing a price feed searcher bot on the OEV Network allowing you to update a price feed on the ETH Sepolia test network.
+This repo takes you through setting up and executing a price feed searcher bot allowing you to update a price feed on the ETH Sepolia test network.
 
-You will need ETH on both ETH Sepolia and the OEV Network for full functionality.
+You will need ETH on both ETH Sepolia and Arbitrum Sepolia for full functionality.
 
-Only a small amount of ETH is needed for bids and transactions costs on the OEV Network.
+Only a small amount of ETH is needed for bids and transactions costs on the Arbitrum Sepolia.
 
-You can bridge from ETH Sepolia to the [OEV Network here](https://oev-network-sepolia-testnet-agg-bridge.eu-north-2.gateway.fm/login):
-
-The bridge page also has an `Add to Metamask` option to easily add the chain to your wallet.
-
-![Add to Metamask](images/settings.png "Settings")
-
-Once the bridging is complete, you can check your wallet to verify that you have some ETH on the OEV network.
-
-Want the TLDR? Click [here](#tldr)
+You can bridge from ETH Sepolia to the Arbitrum Sepolia
 
 ## Getting Started
 
@@ -23,7 +15,6 @@ Update .env file with your personal details:
 ```
 SEPOLIA_RPC_URL=https://rpc.ankr.com/eth_sepolia
 PRIVATE_KEY=
-ETHERSCAN_API_KEY=
 ```
 
 ## Deploy Multicall Contract on Sepolia
@@ -38,7 +29,7 @@ yarn deploy
 
 ## Making a Bid
 
-In order to make a bid in the OEV Auction House, we must deposit our OEV network ETH into the auction contract. We call the deposit function on the OEV auction house contract.
+In order to make a bid in the OEV Auction House, we must deposit our Arbitrum Sepolia ETH into the auction contract. We call the deposit function on the OEV auction house contract.
 
 ```
 npx hardhat run scripts/deposit.js
@@ -294,7 +285,7 @@ ETHERSCAN_API_KEY=
 npx hardhat run scripts/deploy.js
 ```
 
-3. Deposit bridged OEV Eth to the auctioneer contract on OEV Network
+3. Deposit bridged OEV Eth to the auctioneer contract on Arbitrum Sepolia
 
 ```
 npx hardhat run scripts/deposit.js

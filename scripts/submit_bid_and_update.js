@@ -8,6 +8,7 @@ const {
   parseEther,
   hexlify,
   randomBytes,
+  MaxUint256
 } = require("ethers");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -16,19 +17,20 @@ const OevAuctionHouseAbi = require("./contractABIs/OevAuctionHouseABI.json");
 /**
  * Constants
  **/
-const OEV_AUCTION_HOUSE_CONTRACT_ADDRESS = "0x34f13A5C0AD750d212267bcBc230c87AEFD35CC5";  // On OEV testnet
-const CHAIN_ID = 11155111;                                                                // ETH Sepolia chain ID                    
-const WBTC_USD_PROXY_ADDRESS = "0xa8cea58ab9060600e94bb28b2c8510b73171b55c";              // ETH Sepolia WBTC/USD price feed
-const API3SERVER_V1_CONTRACT_ADDRESS = "0x709944a48cAf83535e43471680fDA4905FB3920a";      // API3Proxy server that will allow us to update the price feed
+const OEV_AUCTION_HOUSE_CONTRACT_ADDRESS = "0x34f13A5C0AD750d212267bcBc230c87AEFD35CC5";  // On OEV Mainnet
+const CHAIN_ID = 5000;                                                                // Mantle chain ID                    
+const MNT_USD_PROXY_ADDRESS = "0xae2debfef62b1a0c8af55dae11d197bca1bcde3f";              // MNT/USD price feed proxy address
+const API3SERVER_V1_CONTRACT_ADDRESS = "0x709944a48cAf83535e43471680fDA4905FB3920a";        // API3Proxy server that will allow us to update the price feed
 
 // Your unique inputs
-const OUR_DEPLOYED_MULTICALL_CONTRACT_ADDRESS = "0xb3070A0F2f84765Ee19EfADf91dfE50690a9eEa1"; //Your smart contract deployed on ETH Sepolia network
-const PRICE = parseEther("70000");                                                        // The price point you a bidding lower or higher than
+const OUR_DEPLOYED_MULTICALL_CONTRACT_ADDRESS = "0x837078fe90C2c69787e31aDf64cb941E26e38410"; //Your smart contract deployed on ETH Sepolia network
+const PRICE = parseEther("80000");                                                        // The price point you a bidding lower or higher than
 const GREATER_OR_LOWER = "LTE";                                                           // Setting if it will be "less than or equal to" (either "LTE" or "GTE")
-const BID_AMOUNT = parseEther("0.01");                                                    // The amount of ETH you are bidding to win this auction and perform the oracle update
+const BID_AMOUNT = parseEther("0.00001");                                                    // The amount of ETH you are bidding to win this auction and perform the oracle update
+const OEV_BID_VALIDITY = 60 * 5; // NOTE: Placing one bid on OEV network costs ~0.00003 ETH.
 
 // Setup our contract object for the auction house on OEV test network
-const provider = new JsonRpcProvider("https://arbitrum-sepolia-rpc.publicnode.com");
+const provider = new JsonRpcProvider("https://oev-network.calderachain.xyz/http");
 const privateKey = process.env.PRIVATE_KEY;
 const wallet = new Wallet(privateKey, provider);
 
@@ -43,10 +45,7 @@ const auctionHouse = new Contract(
 
 // Function that encodes which chain and which price feed are we trying to update with our bid 
 const getBidTopic = (chainId, proxyAddress) => {
-  if (CHAIN_ID === 11155111) {
-    return "0x23c1ff076172e1ed47061177322507ca2bc648c1ef1598a73f134999e7874de0";
-  }
-  return "0x0000000000000000000000000000000000000000000000000000000000000001";
+  return "0x76302d70726f642d61756374696f6e6565720000000000000000000000000000";
 };
 
 // Function to encode the bid details and return to bytes
@@ -58,7 +57,7 @@ const getBidDetails = (proxyAddress, condition, conditionValue, updaterAddress) 
   ];
   const conditionIndex = BID_CONDITIONS.findIndex((c) => c.description === condition);
   return abiCoder.encode(
-    ["address", "uint8", "uint256", "address", "bytes32"],
+    ['address', 'uint256', 'int224', 'address', 'bytes32'],
     [proxyAddress, conditionIndex, conditionValue, updaterAddress, hexlify(randomBytes(32)),]
   );
 };
@@ -66,16 +65,18 @@ const getBidDetails = (proxyAddress, condition, conditionValue, updaterAddress) 
 const placeBidWithExpiration = async () => {
   const bidTopic = getBidTopic(
     CHAIN_ID,                                     // Chain ID that the price feed is on                           
-    WBTC_USD_PROXY_ADDRESS                        // The Price feed Proxy we want to update. Currently the only updatable price feed on OEV testnet
+    MNT_USD_PROXY_ADDRESS                        // The Price feed Proxy we want to update. Currently the only updatable price feed on OEV testnet
   );
 
   const bidDetails = getBidDetails(
-    WBTC_USD_PROXY_ADDRESS,                       // Proxy address: Sepolia WBTC/USD price feed - the price feed we want to update
+    MNT_USD_PROXY_ADDRESS,                       // Proxy address: Sepolia WBTC/USD price feed - the price feed we want to update
     GREATER_OR_LOWER,                             // The condition you want to update
     PRICE,                                        // The price you want to update
     OUR_DEPLOYED_MULTICALL_CONTRACT_ADDRESS,      // Your deployed MultiCall contract Address
     hexlify(randomBytes(32))                      // Random padding
   );
+  
+  console.log(bidDetails)
 
   // Placing our bid with the auction house on OEV testnet
   const tx = await auctionHouse.placeBidWithExpiration(
@@ -83,9 +84,9 @@ const placeBidWithExpiration = async () => {
     CHAIN_ID,                                     // Chain ID
     BID_AMOUNT,                                   // The amount of ETH you are bidding to win this auction and perform the oracle update
     bidDetails,                                   // The details about the bid, proxy address, condition, price, your deployed multicall and random
-    parseEther("0"),                              // Collateral Basis Points is 0 on testnet - no need to adjust
-    parseEther("0"),                              // Protocol Fee Basis Points is 0 on testnet - no need to adjust
-    Math.floor(Date.now() / 1000) + 60 * 60 * 12  // 12 hours from now
+    MaxUint256,                              // Collateral Basis Points is 0 on testnet - no need to adjust
+    MaxUint256,                              // Protocol Fee Basis Points is 0 on testnet - no need to adjust
+    Math.trunc(Date.now() / 1000) + OEV_BID_VALIDITY  
   );
   console.log("Bid Tx Hash", tx.hash);
   console.log("Bid placed");
@@ -134,7 +135,7 @@ const placeBidWithExpiration = async () => {
   /////// Perform Oracle Update w Multicall ////////
 
   // Once our bid has been awarded, we want to update the oracle with the info on ETH Sepolia
-  const provider = new JsonRpcProvider("https://gateway.tenderly.co/public/sepolia");
+  const provider = new JsonRpcProvider("https://mantle.drpc.org");
   const sepoliaWallet = new Wallet(privateKey, provider);
 
   const OevSearcherMulticallV1 = new Contract(

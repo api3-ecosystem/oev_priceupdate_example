@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const provider = new JsonRpcProvider(
-  "https://sepolia-rollup.arbitrum.io/rpc"
+  "https://oev-network.calderachain.xyz/http"
 );
 
 //Bring in Private Key from .env
@@ -19,7 +19,7 @@ const auctionHouse = new Contract(
 
 const deposit = async () => {
   const tx = await auctionHouse.deposit({
-    value: parseEther("0.01"),
+    value: parseEther("0.0001"),
   });
   console.log(tx.hash);
   await tx.wait();
